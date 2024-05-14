@@ -1,0 +1,25 @@
+body, #root, page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.card {
+  margin-top: 12px;
+}
+
+.card, .card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40vw;
+}
+.card input, .card-body input {
+  width: 15vw;
+  margin-bottom: 8px;
+}
+
+/*# sourceMappingURL=index.css.map */
