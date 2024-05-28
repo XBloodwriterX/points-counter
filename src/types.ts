@@ -1,5 +1,9 @@
 export interface Config {
-    grades: {grade: string | number, minPercentage: number, maxPercentage: number}[]
+    grades: {
+        grade: string | number,
+        minPercentage: number,
+        maxPercentage: number
+    }[]
 }
 
 export interface PointsCardProps {

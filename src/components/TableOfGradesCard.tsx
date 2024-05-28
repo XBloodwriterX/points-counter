@@ -22,13 +22,17 @@ const TableOfGradesCard: FC<PointsCardProps> = ({ maxPoints, points, config }) =
                     </tr>
                     </thead>
                     <tbody>
-                    {config.grades.map((grade, i, grades) => (
-                        <tr key={i}>
-                            <td>{grade.grade}</td>
-                            <td>{grade.minPercentage}% - {grade.maxPercentage}%</td>
-                            <td>{percentsPerPoints.indexOf(percentsPerPoints.filter(percent => percent >= grade.minPercentage && percent <= grade.maxPercentage)[0])} - {percentsPerPoints.lastIndexOf(percentsPerPoints.filter(percent => percent >= grade.minPercentage && percent <= grade.maxPercentage).pop()!)}</td>
-                        </tr>
-                    ))}
+                    {config.grades.map((grade, i, grades) => {
+                        const minPointsPercentage = percentsPerPoints.indexOf(percentsPerPoints.filter(percent => percent >= grade.minPercentage && percent <= grade.maxPercentage)[0]);
+                        const maxPointsPercentage = percentsPerPoints.lastIndexOf(percentsPerPoints.filter(percent => percent >= grade.minPercentage && percent <= grade.maxPercentage).pop()!);
+                        return (
+                            <tr key={i}>
+                                <td>{grade.grade}</td>
+                                <td>{grade.minPercentage}% - {grade.maxPercentage}%</td>
+                                <td>{minPointsPercentage !== -1 ? minPointsPercentage : ""} - {maxPointsPercentage !== -1 ? maxPointsPercentage : ""}</td>
+                            </tr>
+                        )
+                    })}
                     </tbody>
                 </Table>
             </CardBody>

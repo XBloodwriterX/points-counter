@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Button, Card, CardBody, CardTitle, Form, FormGroup, Input, Label} from "reactstrap";
+import { Button, Card, CardBody, CardTitle, Form, FormFeedback, FormGroup, Input, Label } from "reactstrap";
 import TableOfGradesCard from "./components/TableOfGradesCard";
 import { Config } from "./types";
 import GradeByPointsCard from "./components/GradeByPointsCard";
@@ -8,7 +8,6 @@ import TableOfPointsCard from "./components/TableOfPointsCard";
 function App() {
     const [maxPoints, setMaxPoints] = useState<number>();
     const [points, setPoints] = useState<number>();
-    const [cards, setCards] = useState<Element>();
 
     const zajaczekConfig: Config = {
         grades: [
@@ -45,13 +44,22 @@ function App() {
         ]
     }
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = parseInt(e.target.value)
+        if (inputValue >= 10) {
+            e.target.setAttribute("invalid", "true");
+        }
+        else {
+            e.target.name === 'max-points' ? setMaxPoints(inputValue) : setPoints(inputValue);
+        }
+    }
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const maxPointsValue = parseInt(document.querySelector<HTMLInputElement>('input#maxCountOfPoints')!.value);
         const pointsValue = parseInt(document.querySelector<HTMLInputElement>('input#countOfPoints')!.value);
-        console.log(pointsValue)
-        setMaxPoints(isNaN(maxPointsValue) ? undefined : maxPointsValue)
-        setPoints(isNaN(pointsValue) ? undefined : pointsValue)
+        setMaxPoints(!isNaN(maxPointsValue) && maxPointsValue >= 10 ? maxPointsValue : undefined)
+        setPoints(!isNaN(pointsValue) && pointsValue >= 10 ? pointsValue : undefined)
     }
 
     return (
@@ -63,29 +71,30 @@ function App() {
                     </CardTitle>
                     <Form onSubmit={handleSubmit}>
                         <FormGroup>
-                            <Label for="maxCountOfPoints">Max count of points</Label>
+                            <Label for="maxCountOfPoints" tag="h6">Max number of points</Label>
                             <Input
                                 id="maxCountOfPoints"
                                 name="max-points"
-                                placeholder="Enter max count of points"
+                                placeholder="Enter max number of points"
                                 type="number"
-                                // onChange={e => setMaxPoints(parseInt(e.target.value))}
-                                // className="container-sm"
+                                onChange={handleChange}
                             />
+                            <FormFeedback>
+                                Max number of points must be at least 10
+                            </FormFeedback>
                         </FormGroup>
                         <FormGroup>
-                            <Label>Count of points</Label>
+                            <Label for="countOfPoints" tag="h6">Number of points</Label>
                             <Input
                                 id="countOfPoints"
                                 name="points"
-                                placeholder="Enter count of points"
+                                placeholder="Enter number of points"
                                 type="number"
-                                // onChange={e => setPoints(parseInt(e.target.value))}
-                                // className="container-sm"
+                                onChange={handleChange}
                             />
                         </FormGroup>
                         <Button color="primary" type="submit">
-                            Inspect
+                            Calculate
                         </Button>
                     </Form>
                 </CardBody>
